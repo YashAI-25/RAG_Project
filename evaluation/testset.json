@@ -1,0 +1,42 @@
+[
+  {
+    "question": "What is the purpose of cross-attention in a transformer decoder?",
+    "ground_truth": "Cross-attention calculates attention scores between two distinct sequences by mapping queries (Q) from the decoder to keys (K) and values (V) from the encoder. It tells the decoder which words of the source sentence to focus on while generating the next word."
+  },
+  {
+    "question": "Why is causal masking necessary during training?",
+    "ground_truth": "During training, the entire target sequence is fed to the decoder at once (teacher forcing). Without masking, the decoder could see future tokens and cheat, so causal masking hides future tokens and forces the model to learn using only past context."
+  },
+  {
+    "question": "Is masking functionally required during prediction or inference?",
+    "ground_truth": "No, masking is not functionally required during inference because future tokens do not exist yet at that point -- the model generates one token at a time."
+  },
+  {
+    "question": "Why do we still pass a causal mask during prediction even though it isn't functionally needed?",
+    "ground_truth": "The mask is still passed to keep the code structure identical between training and prediction, avoiding matrix dimension mismatches and preventing a data or behavioral shift in the decoder's internal computations."
+  },
+  {
+    "question": "Why is only the last token's output vector passed to the Linear and Softmax layers during generation?",
+    "ground_truth": "The model is autoregressive and only needs to predict the next new word; all previous words are already fixed, so only the last vector is passed to produce one probability distribution for the next word."
+  },
+  {
+    "question": "What would happen if all output vectors were sent to the softmax layer instead of just the last one?",
+    "ground_truth": "Each vector would try to predict its own next word, producing multiple probability distributions and emitting multiple words at once, which breaks the one-word-at-a-time autoregressive definition."
+  },
+  {
+    "question": "What does the operation attention_scores.masked_fill(mask == 0, -1e9) do?",
+    "ground_truth": "It finds positions in the mask that are 0 (future or blocked positions) and replaces the corresponding attention scores with a very large negative number so that after softmax, those positions get a probability of exactly 0."
+  },
+  {
+    "question": "Why is a large negative number like -1e9 used instead of a smaller negative number?",
+    "ground_truth": "Softmax uses the exponential function; e raised to a very large negative number becomes essentially 0, which forces the probability of blocked or future tokens to become exactly 0, completely hiding them from the model."
+  },
+  {
+    "question": "What is meant by data shift or behavioral shift in decoder inference?",
+    "ground_truth": "It refers to the model behaving differently at inference than it did during training; keeping the causal mask during inference ensures the same mathematical flow and attention pattern as training, avoiding numerical or behavioral inconsistencies."
+  },
+  {
+    "question": "How does the causal mask matrix size change as generation progresses?",
+    "ground_truth": "The mask dynamically resizes to match the current input length -- for example, it is a 1x1 matrix when only the first token exists, and grows to a 2x2 matrix once a second token is generated, and so on."
+  }
+]

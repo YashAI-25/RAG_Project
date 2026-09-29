@@ -18,8 +18,8 @@ def _get_backend_url() -> str:
 
 BACKEND_URL = _get_backend_url()
 
-st.set_page_config(page_title="RAG Teaching Chat", page_icon="📚")
-st.title("📚 RAG Teaching Chat")
+st.set_page_config(page_title="Intelligent RAG Knowledge Assistant", page_icon="📚")
+st.title("📚 Intelligent RAG Knowledge Assistant")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
